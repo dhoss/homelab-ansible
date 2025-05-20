@@ -8,7 +8,7 @@
       - apt-transport-https
     state: present
 
- name: Add the cloudsmith repository
+- name: Add the cloudsmith repository
   ansible.builtin.deb822_repository:
     name: cloudsmith stable
     types: deb
