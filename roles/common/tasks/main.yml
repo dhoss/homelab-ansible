@@ -1,0 +1,33 @@
+---
+- name: Install required packages
+  apt:
+    update_cache: yes
+    name:
+      - debian-keyring
+      - debian-archive-keyring
+      - apt-transport-https
+    state: present
+
+ name: Add the cloudsmith repository
+  ansible.builtin.deb822_repository:
+    name: cloudsmith stable
+    types: deb
+    uris: https://dl.cloudsmith.io/public/caddy/stable/
+    suites: "{{ ansible_distribution_release | lower }}"
+    components:
+      - caddy
+    architectures: amd64
+    signed_by: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+    enabled: true
+
+- name: Install Caddy
+  apt:
+    update_cache: yes
+    name: caddy
+    state: present
+
+- name: Enable and start Caddy service
+  service:
+    name: caddy
+    enabled: yes
+    state: started
